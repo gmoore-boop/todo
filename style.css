@@ -1,0 +1,236 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f4f6f9, #e9eef5);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+  color: #1e293b;
+}
+
+/* Container principal */
+.StartElements {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Card principal */
+.container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+/* Área de adicionar tarefa */
+.divAdd {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.inputAdd {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.inputAdd:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Botões */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btnAdd {
+  background: #3b82f6;
+  color: white;
+}
+
+.btnAdd:hover {
+  background: #2563eb;
+}
+
+/* Lista */
+.ulTodos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Item da lista */
+.liTodo {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.liTodo:hover {
+  background: #eef2ff;
+}
+
+/* Texto */
+.spanText {
+  font-size: 14px;
+}
+
+/* Tarefa concluída */
+.done {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+/* Opções do item */
+.divTodoOptions {
+  margin-top: 10px;
+  padding: 12px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.divTodoOptions button {
+  background: #e2e8f0;
+}
+
+.divTodoOptions button:hover {
+  background: #cbd5e1;
+}
+
+/* Área de edição */
+.divEdit {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.inputEdit {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+.btnConfirmEdit {
+  background: #10b981;
+  color: white;
+}
+
+.btnConfirmEdit:hover {
+  background: #059669;
+}
+
+/* Tags */
+.ulTagList {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.liTag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 5px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.btnDeleteTag {
+  background: transparent;
+  color: #0369a1;
+  font-size: 11px;
+  padding: 0;
+}
+
+.btnDeleteTag:hover {
+  text-decoration: underline;
+}
+
+/* Adicionar tag */
+.divAddTag {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.inputTag {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+/* Filtro */
+.containerFilter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonFilter {
+  background: #64748b;
+  color: white;
+}
+
+.buttonFilter:hover {
+  background: #475569;
+}
+
+/* Botões de filtro por tag */
+.buttonTag,
+.selectedButtonTag {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.buttonTag {
+  background: #e2e8f0;
+}
+
+.buttonTag:hover {
+  background: #cbd5e1;
+}
+
+.selectedButtonTag {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Item selecionado */
+.btnSelected {
+  background: #1d4ed8;
+  color: white;
+}

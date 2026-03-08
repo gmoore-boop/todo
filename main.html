@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <title>To-do List</title>
+  </head>
+  <body id="body">
+    <div class="StartElements">
+      <div class="container" id="container"  data-action="hideOptions">
+        <div class="divAdd">
+          <input id="inputAdd" class="inputAdd" name="inputAdd" placeholder="create an item"> 
+          <button id="btnAdd" class="btnAdd" data-action="addTodo">Add</button>
+        </div>
+
+        <ul id = "ulTodos" class = "ulTodos" data-action="hideOptions"></ul>
+      </div>
+    
+      <div class="containerFilter" id="containerFilter">
+        <button data-action="manageFilterOptions" class="buttonFilter">Filter</button>
+        
+      </div>
+    </div>
+
+    <template id="todoTemplate">
+      <li>
+        <button class="liTodo" data-action="showOptions" name="liTodo">
+          <span class="spanText"></span>
+        </button>
+      </li>
+    </template>
+
+    <template id="editTemplate">
+      <div class="divEdit">
+        <input class="inputEdit" name="inputEdit">
+        <button class="btnConfirmEdit" data-action="confirmEdit"> Confirm Edition </button>
+       </div>
+    </template>
+
+    <template id="todoOptionsTemplate">
+      <div class="divTodoOptions">
+        <ul class="ulTagList"></ul>
+        <div class="divOptionsBtns">
+          <button data-action = "delete"> Delete </button>
+          <button data-action = "edit"> Edit </button>
+          <button data-action = "addDone">Mark as Done</button>
+          <button data-action = "addTagOn">Add Tag</button>
+        </div>
+      </div>
+    </template>
+
+    <!-- Done templates -->
+    <template id="doneTodoTemplate">
+    <li>
+      <button class="liTodo" data-action="showOptions" name="doneLiTodo">
+        <span class="spanText done"></span>
+      </button>
+    </li>
+    </template>
+
+    <template id="doneEditTemplate">
+      <div class="divEdit">
+        <input class="inputEdit" name="inputEdit">
+        <button class="btnConfirmEdit" data-action="confirmEdit"> Confirm Edition </button>
+       </div>
+    </template>
+
+    <template id="doneOptionsTemplate">
+      <div class="divTodoOptions">
+        <ul class="ulTagList"></ul>
+        <div class="divOptionsBtns">
+          <button data-action = "delete"> Delete </button>
+          <button data-action = "edit"> Edit </button>
+          <button data-action = "remDone">Mark as Undone</button>
+          <button data-action = "addTagOn">Add Tag</button>
+        </div>
+      </div>
+    </template>
+
+    <!--Tags-->
+    <template id="AddTagTemplate">
+      <div class="divAddTag">
+        <input placeholder="tag name" class="inputTag">
+        <button data-action="confirmTag">Confirm</button>
+      </div>
+    </template>
+
+    <template id="tagTemplate">
+      <li class="liTag">
+        <span class="spanTagText"></span>
+        <button class="btnDeleteTag" data-action="deleteTag">Delete tag</button>
+      </li>
+    </template>
+     
+    <!--Filters-->
+    <template id="filterOptionsTemplate">
+      <div class = "divFilter"></div>
+      <button class = "buttonTag" data-action="filterTag"></button>
+    </template>
+
+    <template id="selectedFilterOptionsTemplate">
+      <div class = "divFilter"></div>
+      <button class = "selectedButtonTag" data-action="filterTag"></button>
+    </template>
+
+    <template id="selectedItemTemplate">
+      <button class="btnSelected"></button>
+    </template>
+    
+    <script  type="module" src="src/index.js" ></script>
+  </body>
+</html>
