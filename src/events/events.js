@@ -157,9 +157,7 @@ export function registerEvents(){
         }
         case "deleteTag":{
           const li = event.target.closest(".liTag");
-          const ulTag = event.target.closest(".ulTodos");
-          const buttonTodo = ulTag.closest(".liTodo");
-
+          const buttonTodo = li.closest(".liTodo");
           const id = Number(buttonTodo.dataset.id);
           const text = li.querySelector(".spanTagText").textContent.trim().toUpperCase();
           
@@ -241,8 +239,20 @@ export function registerEvents(){
           break;
         }
         case "z":{
-       
-          
+          const past = store.getPast(); 
+          if (past.length===0) return; 
+          store.dispatch({
+            type: "UNDO",
+          })
+          break;
+        }
+        case "m":{
+          const future = store.getFuture(); 
+          if (future.length===0) return; 
+          store.dispatch({
+            type: "REDO",
+          })
+          break;
         }
       } 
        

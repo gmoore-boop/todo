@@ -20,8 +20,7 @@ export function render(){
 
 function renderItem(){
   const state = store.getState();
-  ul.replaceChildren();
-
+  ul.replaceChildren();  
   const itens = [...state.itens];
   if (!itens) return;
   

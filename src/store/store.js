@@ -1,29 +1,40 @@
 export function createStore(reducer){
- 
  let state = {
-    itens:[],
-    showOptions:{
-      active: false,
-      id: null
+    past: [],
+    present: {
+      itens:[],
+      showOptions:{
+        active: false,
+        id: null
+      },
+      editMode:{
+        active: false,
+        id: null
+      },
+      addTagMode:{
+        active: false,
+        id: null
+      },
+      filter: {
+        options: false, 
+        tags: []
+      },
+      tagList:[],
+      selected: [],
     },
-    editMode:{
-      active: false,
-      id: null
-    },
-    addTagMode:{
-      active: false,
-      id: null
-    },
-    filter: {
-      options: false, 
-      tags: []
-    },
-    tagList:[],
-    selected: [],
-  };
+    future: [], 
+ }
 
   function getState(){
-    return state; 
+    return state.present; 
+  }
+
+  function getPast(){
+    return state.past;
+  }
+
+  function getFuture(){
+    return state.future; 
   }
 
   let listeners=[];
@@ -40,9 +51,20 @@ export function createStore(reducer){
   };
 
   function dispatch(action){
-    state = reducer (state,action);
+    if (action.type==="UNDO"){
+      state.future.push(state.present); 
+      state.present = state.past.pop(); 
+    }
+    else if (action.type==="REDO"){
+      state.past.push(state.present);
+      state.present = state.future.pop(); 
+    }
+    else{
+      state.past.push(state.present);
+      state.present = reducer (state.present,action);
+    }
     listeners.forEach((listener)=>{listener()});
   }
   
-  return {getState, dispatch, subscribe};
+  return {getState, dispatch, subscribe, getPast, getFuture};
 }

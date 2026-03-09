@@ -1,8 +1,5 @@
 export function reducer (state, action){
   switch (action.type){
-    case "UNDONE":{
-  
-    }
     case "MANAGE_OPTIONS": {
       const {id, active} = action.payload;
 
@@ -17,6 +14,7 @@ export function reducer (state, action){
           active: false, 
           id: null
         }
+       
       }
     }
     case "MANAGE_FILTER":{
@@ -158,12 +156,23 @@ export function reducer (state, action){
     
 
       let tagArray=[...state.tagList];
+      let filter = {...state.filter}; 
       const exists = itensArray.some((item)=>item.tags.some(tag=>tag===text))
       if (!exists){
-        tagArray = tagArray.filter((tag)=>{return tag!==text})
+        tagArray = tagArray.filter((tag)=>{return tag!==text});
+        filter.tags = filter.tags.filter((tag)=>{return tag!==text}); //clean filter
+      };
+      
+      //if filter tags is empty, clear it 
+      if (filter.tags.length==0) return {
+        ...state, 
+        itens: itensArray,
+        tagList: tagArray, 
+        filter: {
+          options: false, 
+          tags: [],
+        }
       }
-    
-
       return {
         ...state,
         itens: itensArray,
