@@ -43,7 +43,7 @@ export function registerEvents(){
         case "showOptions":{
           const buttonTodo = event.target;
           const id = Number(buttonTodo.dataset.id); 
-          if (store.getState().showOptions.id===id) return;
+          if (store.getState().ui.showOptions.id===id) return;
           const active = true; 
           store.dispatch({
             type: "MANAGE_OPTIONS",
@@ -172,7 +172,7 @@ export function registerEvents(){
           store.dispatch({
             type:"MANAGE_FILTER",
             payload:{
-              options: !store.getState().filter.options
+              options: !store.getState().ui.filter.options
             }
           })
           break;
@@ -194,8 +194,8 @@ export function registerEvents(){
     if (event.ctrlKey){
       switch (event.key){
         case "Backspace":{
-          const selected = [...store.getState().selected];
-          const items = [...store.getState().itens];
+          const selected = [...store.getState().ui.selected];
+          const items = [...store.getState().data.itens];
 
 
           //find the items that are selected

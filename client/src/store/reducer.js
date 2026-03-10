@@ -5,51 +5,75 @@ export function reducer (state, action){
 
       return {
         ...state, 
-        showOptions:{id, active},
-        editMode:{
-          active: false,
-          id: null
-        },
-        addTagMode:{
-          active: false, 
-          id: null
+        ui: { 
+          ...state.ui,
+          showOptions:{id, active},
+          editMode:{
+            active: false,
+            id: null
+          },
+          addTagMode:{
+            active: false, 
+            id: null
+          }
         }
        
       }
     }
     case "MANAGE_FILTER":{
       const options = action.payload.options; 
-      return{...state, filter:{...state.filter, options:options}};
+      return{
+        ...state, 
+        ui: {
+          ...state.ui,
+          filter:{...state.ui.filter, options:options}
+        }
+
+      };
     }
     case "LOAD_STATE": {
       return action.payload;
     }
-    case "ADD_ITEM": {
+    case "ADD_ITEM": { //data change
       const {id, text} = action.payload;
-      const tags = state.filter.tags //if there is tags being filtered, item inherit them
-      return {...state, itens: [
-        ...state.itens, 
-        {id, text, done:false, tags:tags}
-      ]};
-    }
-    case "DELETE_ITEM":{
-      const id = action.payload.id; 
-      const itensArray = state.itens.filter ((item)=>{return item.id!==id;})
+      const tags = state.ui.filter.tags //if there is tags being filtered, item inherit them
       return {
         ...state, 
-        itens: itensArray,
-        showOptions: {
-          active:false, 
-          id:null
-        }
+        data : {
+          ...state.data,
+          itens: [
+            ...state.data.itens, 
+            {id, text, done:false, tags:tags}
+          ]
+        },
+        past: [...state.past, state.data]
       }
     }
-    case "DELETE_ITENS":{
-      const ids = [...state.selected]; 
-      const array = [...state.itens];
+    case "DELETE_ITEM":{ //data change
+      const id = action.payload.id; 
+      const itensArray = state.data.itens.filter ((item)=>{return item.id!==id;})
+      return {
+        ...state, 
+        data: {
+          ...state.data,
+          itens: itensArray,
+        },
+        ui: {
+          ...state.ui,
+          showOptions: {
+            active:false, 
+            id:null
+          }
+        },
+        past: [...state.past, state.data]
+      }
+    }
+    case "DELETE_ITENS":{ //data change
+      const ids = [...state.ui.selected]; 
+      const array = [...state.data.itens];
 
       ids.forEach(id=>{
-        state.itens.forEach(item=>{
+        state.data.itens.forEach(item=>{
           if (item.id === id){
             const index = array.indexOf(item);
             if (index!==-1) array.splice(index,1); 
@@ -59,94 +83,156 @@ export function reducer (state, action){
 
       return {
         ...state, 
-        itens: array,
-        showOptions: {
-          active:false, 
-          id:null
+        data:{
+          ...state.data,
+          itens:array,
         },
-        selected: []
+
+        ui: {
+          ...state.ui, 
+          showOptions: {
+            active:false, 
+            id:null
+          },
+          selected: []
+        },
+        past: [...state.past, state.data]
+       
       };
     }
     case "EDITMODE_ON": {
       const id = action.payload.id;
-      return {...state, editMode:{
-        active: true,
-        id: id
-      }}
+      return {
+        ...state,
+        ui:{
+          ...state.ui, 
+          editMode:{
+            active: true,
+            id: id
+          }
+        }
+      }
     }
-    case "EDIT_ITEM":{
+    case "EDIT_ITEM":{//data change
       const {newText, id} = action.payload; 
-      const array = state.itens.map((item)=>{
+      const array = state.data.itens.map((item)=>{
         if (id===item.id) return {...item, text: newText};
         else return item; 
       });
 
        
-      return {...state, 
-        itens:[...array], 
-        editMode:{
-          active: false,
-          id: null
+      return {
+        ...state, 
+        data: {
+          ...state.data,  
+          itens:[...array], 
         },
-        showOptions:{
-          active: false,
-          id: null
-        }
+
+        ui:{
+          ...state.ui,
+          editMode:{
+            active: false,
+            id: null
+          },
+          showOptions:{
+            active: false,
+            id: null
+          }
+        },
+        past: [...state.past, state.data]
       };
      
     }
-    case "ADD_DONE":{
+    case "ADD_DONE":{//data change
       const id = action.payload.id;
-      const array = state.itens.map ((item)=>{
+      const array = state.data.itens.map ((item)=>{
         if (item.id===id) return {...item, done:true};
         else return item; 
       })
-      return {...state, itens:array, showOptions: {active: false, id:null}}; 
+      return {
+        ...state, 
+        data:{
+          ...state.data,
+          itens:array, 
+        },
+
+        ui:{
+          ...state.ui,
+          showOptions: {active: false, id:null}
+        },
+        past: [...state.past, state.data],
+      }; 
     }
-    case "REM_DONE":{
+    case "REM_DONE":{ //data change
       const id = action.payload.id;
-      const array = state.itens.map ((item)=>{
+      const array = state.data.itens.map ((item)=>{
         if (item.id===id) return {...item, done:false}
         else return item; 
       })
-      return {...state, itens: array, showOptions: {active:false, id:null}}; 
+      return {
+        ...state, 
+        data:{
+          ...state.data,
+          itens: array, 
+        },
+        ui: {
+          ...state.ui,
+          showOptions: {active:false, id:null}
+        },
+        past: [...state.past, state.data],
+      }; 
     }
     case "ADDTAG_ON":{
       const id = action.payload.id; 
-      return {...state, addTagMode:{
-        active: true,
-        id: id
-      }}
+      return {
+        ...state, 
+        ui:{
+          ...state.ui,
+          addTagMode:{
+            active: true,
+            id: id
+          }
+        } 
+      }
     }
-    case "ADD_TAG":{
+    case "ADD_TAG":{ //data change
       const {id, tag} = action.payload; 
-      const ItensArray = state.itens.map((item)=>{
+      const ItensArray = state.data.itens.map((item)=>{
         if (id===item.id) return {...item, tags:[...item.tags, tag]}
         else {return item}; 
       })
   
-      const tagArray = [...state.tagList]; 
+      const tagArray = [...state.data.tagList]; 
       const exists = tagArray.some(t => t===tag);
       if (!exists) tagArray.push(tag); 
 
-      return {...state, 
-        itens:[...ItensArray],
-        addTagMode:{
-          active: false, 
-          id:null
+      return {
+        ...state, 
+        data: {
+          ...state.data,
+          itens:[...ItensArray],
+          tagList:[...tagArray],
         },
-        showOptions:{
-          active:false,
-          id:null
+
+        ui:{
+          ...state.ui,
+          addTagMode:{
+            active: false, 
+            id:null
+          },
+          showOptions:{
+            active:false,
+            id:null
+          },
         },
-        tagList:[...tagArray],
+        past: [...state.past, state.data],
       }
 
     }
-    case "DELETE_TAG":{
+    case "DELETE_TAG":{//data change
       const {id,text} = action.payload; 
 
-      const itensArray = state.itens.map((item)=>{
+      const itensArray = state.data.itens.map((item)=>{
         if (item.id===id){
           const tags = item.tags.filter((tag)=>{return tag!==text})
           return {...item, tags: tags}; 
@@ -155,8 +241,8 @@ export function reducer (state, action){
       })
     
 
-      let tagArray=[...state.tagList];
-      let filter = {...state.filter}; 
+      let tagArray=[...state.data.tagList];
+      let filter = {...state.ui.filter}; 
       const exists = itensArray.some((item)=>item.tags.some(tag=>tag===text))
       if (!exists){
         tagArray = tagArray.filter((tag)=>{return tag!==text});
@@ -166,45 +252,95 @@ export function reducer (state, action){
       //if filter tags is empty, clear it 
       if (filter.tags.length==0) return {
         ...state, 
-        itens: itensArray,
-        tagList: tagArray, 
-        filter: {
-          options: false, 
-          tags: [],
-        }
+        data: {
+          ...state.data,
+          itens: itensArray,
+          tagList: tagArray,
+        }, 
+        ui:{
+          ...state.ui,
+          filter: {
+            options: false, 
+            tags: [],
+          }
+        },
+        past: [...state.past, state.data],
       }
       return {
         ...state,
-        itens: itensArray,
-        tagList: tagArray
+        data: {
+          ...state.data,
+          itens: itensArray,
+          tagList: tagArray
+        },
+        past: [...state.past, state.data],
       }
 
     }
     case "FILTER_TAG":{
       const tag = action.payload.tag; 
 
-      if (state.filter.tags.includes(tag)){
-        const array = state.filter.tags.filter((tagName)=>{return tagName!==tag})
+      if (state.ui.filter.tags.includes(tag)){
+        const array = state.ui.filter.tags.filter((tagName)=>{return tagName!==tag})
 
-        return {...state, filter:{
-          ...state.filter, tags:array
-        }}
+        return {
+          ...state, 
+          ui:{
+            ...state.ui,
+            filter:{
+              ...state.ui.filter, tags:array
+            }
+          }
+        }
 
       }
       else {
         return {
-          ...state, filter:{
-            ...state.filter, tags:[...state.filter.tags, tag]
+          ...state, 
+          ui: {
+            ...state.ui,
+            filter:{
+              ...state.ui.filter, 
+              tags:[...state.ui.filter.tags, tag]
+            }
           }
         }
       }
     }
     case "MANAGE_SELECTION":{
       const id = action.payload.id; 
-      const exists = state.selected.includes(id);
+      const exists = state.ui.selected.includes(id);
       const array = exists? 
-        state.selected.filter(selId=>selId!==id) : [...state.selected, id] ; 
-      return {...state, selected: array};
+        state.ui.selected.filter(selId=>selId!==id) : [...state.ui.selected, id] ; 
+      return {...state, ui: {...state.ui, selected: array}};
+    }
+    case "UNDO": {
+      const past = [...state.past];
+      const future = [...state.future]; 
+
+      future.push(state.data); 
+      const data = past.pop(); 
+
+      return {
+        ...state, 
+        past,
+        future,
+        data
+      }
+    }
+    case "REDO": {
+      const past = [...state.past];
+      const future = [...state.future]; 
+
+      past.push(state.data);
+      const data = future.pop();
+
+      return {
+        ...state, 
+        past,
+        future,
+        data
+      }
     }
     case "ADD_DONES":{
     }

@@ -1,8 +1,11 @@
 export function createStore(reducer){
  let state = {
     past: [],
-    present: {
+    data: {
       itens:[],
+      tagList:[],
+    },
+    ui:{
       showOptions:{
         active: false,
         id: null
@@ -19,14 +22,14 @@ export function createStore(reducer){
         options: false, 
         tags: []
       },
-      tagList:[],
       selected: [],
     },
     future: [], 
  }
 
   function getState(){
-    return state.present; 
+    const {data, ui} = state; 
+    return {data, ui};   
   }
 
   function getPast(){
@@ -51,18 +54,7 @@ export function createStore(reducer){
   };
 
   function dispatch(action){
-    if (action.type==="UNDO"){
-      state.future.push(state.present); 
-      state.present = state.past.pop(); 
-    }
-    else if (action.type==="REDO"){
-      state.past.push(state.present);
-      state.present = state.future.pop(); 
-    }
-    else{
-      state.past.push(state.present);
-      state.present = reducer (state.present,action);
-    }
+    state = reducer (state,action);
     listeners.forEach((listener)=>{listener()});
   }
   

@@ -21,14 +21,14 @@ export function render(){
 function renderItem(){
   const state = store.getState();
   ul.replaceChildren();  
-  const itens = [...state.itens];
+  const itens = [...state.data.itens];
   if (!itens) return;
   
 
   itens.forEach((item)=>{
 
     const tags = [...item.tags]; 
-    const filterTags = [...state.filter.tags];
+    const filterTags = [...state.ui.filter.tags];
 
     let exists = true; 
     filterTags.forEach ((filterTag)=>{
@@ -52,16 +52,16 @@ function renderShowOptions () {
 
   const state = store.getState();
   
-  if (state.showOptions.active){
+  if (state.ui.showOptions.active){
     
 
-    const id = state.showOptions.id; 
+    const id = state.ui.showOptions.id; 
 
     const buttonsTodo = [...ul.querySelectorAll(".liTodo")];
     const buttonTodo = buttonsTodo.find(li =>( Number(li.dataset.id)) === id);
     if (!buttonTodo) return; 
 
-    const item = state.itens.find(item => item.id === id);
+    const item = state.data.itens.find(item => item.id === id);
     const template = item.done? doneOptionsTemplate : todoOptionsTemplate;
     const div = template.content.querySelector(".divTodoOptions").cloneNode(true);
     buttonTodo.append(div);
@@ -74,17 +74,17 @@ function renderEdit () {
 
   const state = store.getState();
 
-  if (state.editMode.active){
+  if (state.ui.editMode.active){
    
 
-    const id = state.editMode.id;
+    const id = state.ui.editMode.id;
     
 
     const buttonsTodo = [...ul.querySelectorAll(".liTodo")];
     const buttonTodo = buttonsTodo.find(li =>( Number(li.dataset.id)) === id);
     if (!buttonTodo) return; 
 
-    const item = state.itens.find(item => item.id === id);
+    const item = state.data.itens.find(item => item.id === id);
 
     const template = item.done? doneEditTemplate : editTemplate;
 
@@ -98,9 +98,9 @@ function renderAddTag (){
 
   const state = store.getState();
 
-  if(state.addTagMode.active){
+  if(state.ui.addTagMode.active){
    
-    const id = state.addTagMode.id;
+    const id = state.ui.addTagMode.id;
 
     const buttonsTodo = [...ul.querySelectorAll(".liTodo")];
     const buttonTodo = buttonsTodo.find((buttonTodo) =>( buttonTodo.dataset.id === id));
@@ -116,11 +116,11 @@ function renderTags(){
 
   const state = store.getState();
 
-  if (state.showOptions.active){
+  if (state.ui.showOptions.active){
     
    
     
-    const id = state.showOptions.id; 
+    const id = state.ui.showOptions.id; 
 
     const buttonsTodo = [...ul.querySelectorAll(".liTodo")];
     const buttonTodo = buttonsTodo.find(li =>( Number(li.dataset.id)) === id);
@@ -129,7 +129,7 @@ function renderTags(){
     const ulTag = buttonTodo.querySelector(".ulTagList");
     
     
-    const item = state.itens.find(item => item.id === id);
+    const item = state.data.itens.find(item => item.id === id);
     item.tags.forEach((tag)=>{
       const template = tagTemplate;
       const li = template.content.querySelector(".liTag").cloneNode(true);
@@ -146,7 +146,7 @@ function renderTags(){
 function renderFilter(){
   const state = store.getState();
 
-  if (state.filter.options){
+  if (state.ui.filter.options){
     let divFilter = containerFilter.querySelector(".divFilter");
     if (!divFilter){
       divFilter = filterOptionsTemplate.content.querySelector(".divFilter").cloneNode(true);
@@ -155,8 +155,8 @@ function renderFilter(){
 
   divFilter.replaceChildren();
 
-    state.tagList.forEach((tag)=>{
-      const isFiltering = state.filter.tags.includes(tag);
+    state.data.tagList.forEach((tag)=>{
+      const isFiltering = state.ui.filter.tags.includes(tag);
       const template = isFiltering? selectedFilterOptionsTemplate: filterOptionsTemplate;
       const buttonTag = template.content.querySelector(".buttonTag, .selectedButtonTag").cloneNode(true); 
       buttonTag.textContent = tag; 
@@ -172,7 +172,7 @@ function renderFilter(){
 }
 function renderSelected(){
   const state = store.getState();
-  const selected = [...state.selected];
+  const selected = [...state.ui.selected];
 
   if (selected.length!==0){
     const buttonsTodo = ul.querySelectorAll(".liTodo"); 
@@ -191,4 +191,3 @@ function renderSelected(){
  }
 
 }
-//render item diferently if it is a selected item! add a selected template at html and then at css
